@@ -1,0 +1,1 @@
+this folder is for Ramco batch file to generate CSV files.
