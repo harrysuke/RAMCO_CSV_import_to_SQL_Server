@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Web;
+using System.Net.Mail;
 using System.Windows.Forms;
 
 namespace csv2
@@ -95,8 +96,31 @@ namespace csv2
                             {
                                 return parts[1].Trim();
                             }
-
                             if (folder == "BackupFolder" && parts[0].Trim().Equals("BackupFolder"))
+                            {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "SmtpClient" && parts[0].Trim().Equals("SmtpClient"))
+                            {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "SmtpPort" && parts[0].Trim().Equals("SmtpPort"))
+                            {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "EmailFrom" && parts[0].Trim().Equals("EmailFrom"))
+                            {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "EmailFromUsername" && parts[0].Trim().Equals("EmailFromUsername"))
+                            {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "EmailFromPassword" && parts[0].Trim().Equals("EmailFromPassword"))
+                            {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "EmailTo" && parts[0].Trim().Equals("EmailTo"))
                             {
                                 return parts[1].Trim();
                             }
@@ -146,40 +170,92 @@ namespace csv2
                 {
                     connection.Open();
                     string tableName = "ARTransactions";
-                    string insertQuery = "INSERT INTO "+tableName+"(";
+                    string insertQuery = "INSERT INTO " + tableName + "(";
 
-                    foreach (DataGridViewColumn column in dataGridView1.Columns) {
+                    foreach (DataGridViewColumn column in dataGridView1.Columns)
+                    {
                         insertQuery += column.HeaderText + ",";
                     }
 
                     insertQuery = insertQuery.TrimEnd(',') + ") VALUES (";
 
-                    foreach (DataGridViewColumn column in dataGridView1.Columns) {
+                    foreach (DataGridViewColumn column in dataGridView1.Columns)
+                    {
                         insertQuery += "@" + column.HeaderText + ",";
                     }
 
                     insertQuery = insertQuery.TrimEnd(',') + ")";
 
-                    using (SqlCommand sqlCommand = new SqlCommand(insertQuery, connection)) {
-                        foreach (DataGridViewColumn column in dataGridView1.Columns) {
-                            sqlCommand.Parameters.AddWithValue("@"+column.HeaderText, null);
+                    using (SqlCommand sqlCommand = new SqlCommand(insertQuery, connection))
+                    {
+                        foreach (DataGridViewColumn column in dataGridView1.Columns)
+                        {
+                            sqlCommand.Parameters.AddWithValue("@" + column.HeaderText, null);
                         }
 
-                        foreach (DataGridViewRow row in dataGridView1.Rows) {
-                            for (int i=0; i < dataGridView1.Columns.Count; i++) {
-                                sqlCommand.Parameters["@"+dataGridView1.Columns[i].HeaderText].Value = row.Cells[i].Value;
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                            {
+                                sqlCommand.Parameters["@" + dataGridView1.Columns[i].HeaderText].Value = row.Cells[i].Value;
                             }
                             sqlCommand.ExecuteNonQuery();
                         }
                     }
 
-                        //MessageBox.Show("Record inserted successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        toolStripStatusLabel1.Text = "Record inserted successfully";
+                    //MessageBox.Show("Record inserted successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    toolStripStatusLabel1.Text = "Record inserted successfully";
                     string errorMessage = $"[SUCCESS] Record inserted successfully at {DateTime.Now}";
                     Updatelog(errorMessage);
                     Application.DoEvents();
-                    Application.Exit();
+                    //Application.Exit();
+                    sendEmail();
+
                 }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"[ERR0R] {ex.Message} at {DateTime.Now}";
+                Updatelog(errorMessage);
+                Application.Exit();
+            }
+        }
+
+        private void sendEmail()
+        {
+            try
+            {
+                MailMessage mail = new MailMessage();
+                string smtp = LoadDirFromIni("SmtpClient");
+                SmtpClient smtpClient = new SmtpClient(smtp);
+
+                string emailFrom = LoadDirFromIni("EmailFrom");
+                mail.From = new MailAddress(emailFrom);
+
+                string emailTo = LoadDirFromIni("EmailTo");
+                mail.To.Add(emailTo);
+
+                mail.Subject = "CSV import to SQL";
+                mail.Body = "Attached is the log file.";
+
+                string logFile = Path.Combine(Environment.CurrentDirectory, "log.txt");
+                System.Net.Mail.Attachment attachment;
+                attachment = new System.Net.Mail.Attachment(logFile);
+                mail.Attachments.Add(attachment);
+
+                string port = LoadDirFromIni("SmtpPort");
+                smtpClient.Port = (int)Convert.ToInt64(port);
+
+                string username = LoadDirFromIni("EmailFromUsername");
+                string password = LoadDirFromIni("EmailFromPassword");
+                smtpClient.Credentials = new System.Net.NetworkCredential(username, password);
+
+                smtpClient.EnableSsl = true;
+                smtpClient.Send(mail);
+
+                string errorMessage = $"[SUCCESS] Email sent successfully at {DateTime.Now}";
+                Updatelog(errorMessage);
+                Application.Exit();
             }
             catch (Exception ex)
             {
@@ -315,7 +391,19 @@ namespace csv2
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("About CSV reader by ICT, JPB\r\n20 Febuary 2024\r\n© JPB. All rights reserved.\r\nAuthor: Khairi Juri", "About",MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string filename = Path.Combine(Environment.CurrentDirectory, "csv.ini");
+            System.Diagnostics.Process.Start("notepad.exe", filename);
+        }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("About CSV reader by ICT, JPB\r\n20 Febuary 2024\r\n© JPB. All rights reserved.\r\nAuthor: Khairi Juri", "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void logsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string filename = Path.Combine(Environment.CurrentDirectory, "log.txt");
+            System.Diagnostics.Process.Start("notepad.exe",filename);
         }
     }
 }
