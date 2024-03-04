@@ -37,12 +37,13 @@
             exitToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
+            logsToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem1 = new ToolStripMenuItem();
             aboutToolStripMenuItem1 = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripProgressBar1 = new ToolStripProgressBar();
-            logsToolStripMenuItem = new ToolStripMenuItem();
+            batchFileToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -100,7 +101,7 @@
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, logsToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, logsToolStripMenuItem, batchFileToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(76, 24);
             helpToolStripMenuItem.Text = "Settings";
@@ -112,6 +113,13 @@
             aboutToolStripMenuItem.Text = "Configuration";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
+            // logsToolStripMenuItem
+            // 
+            logsToolStripMenuItem.Name = "logsToolStripMenuItem";
+            logsToolStripMenuItem.Size = new Size(224, 26);
+            logsToolStripMenuItem.Text = "Logs";
+            logsToolStripMenuItem.Click += logsToolStripMenuItem_Click;
+            // 
             // helpToolStripMenuItem1
             // 
             helpToolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem1 });
@@ -122,7 +130,7 @@
             // aboutToolStripMenuItem1
             // 
             aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            aboutToolStripMenuItem1.Size = new Size(224, 26);
+            aboutToolStripMenuItem1.Size = new Size(133, 26);
             aboutToolStripMenuItem1.Text = "About";
             aboutToolStripMenuItem1.Click += aboutToolStripMenuItem1_Click;
             // 
@@ -150,12 +158,12 @@
             toolStripProgressBar1.RightToLeftLayout = true;
             toolStripProgressBar1.Size = new Size(114, 19);
             // 
-            // logsToolStripMenuItem
+            // batchFileToolStripMenuItem
             // 
-            logsToolStripMenuItem.Name = "logsToolStripMenuItem";
-            logsToolStripMenuItem.Size = new Size(224, 26);
-            logsToolStripMenuItem.Text = "Logs";
-            logsToolStripMenuItem.Click += logsToolStripMenuItem_Click;
+            batchFileToolStripMenuItem.Name = "batchFileToolStripMenuItem";
+            batchFileToolStripMenuItem.Size = new Size(224, 26);
+            batchFileToolStripMenuItem.Text = "Batch file";
+            batchFileToolStripMenuItem.Click += batchFileToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -195,5 +203,6 @@
         private ToolStripMenuItem helpToolStripMenuItem1;
         private ToolStripMenuItem aboutToolStripMenuItem1;
         private ToolStripMenuItem logsToolStripMenuItem;
+        private ToolStripMenuItem batchFileToolStripMenuItem;
     }
 }

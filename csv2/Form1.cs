@@ -403,7 +403,17 @@ namespace csv2
         private void logsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string filename = Path.Combine(Environment.CurrentDirectory, "log.txt");
-            System.Diagnostics.Process.Start("notepad.exe",filename);
+            System.Diagnostics.Process.Start("notepad.exe", filename);
+        }
+
+        private void batchFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string[] filenames = Directory.GetFiles(Path.Combine(Environment.CurrentDirectory, "RAMCO"), "ramco_csv.bat");
+            if (filenames.Length > 0)
+            {
+                string filename = filenames[0];
+                System.Diagnostics.Process.Start("notepad.exe", filename);
+            }
         }
     }
 }
