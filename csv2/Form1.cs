@@ -100,6 +100,18 @@ namespace csv2
                             {
                                 return parts[1].Trim();
                             }
+                            if (folder == "Server" && parts[0].Trim().Equals("Server")) {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "Database" && parts[0].Trim().Equals("Database")) {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "UserId" && parts[0].Trim().Equals("UserId")) {
+                                return parts[1].Trim();
+                            }
+                            if (folder == "Password" && parts[0].Trim().Equals("Password")) {
+                                return parts[1].Trim();
+                            }
                             if (folder == "SmtpClient" && parts[0].Trim().Equals("SmtpClient"))
                             {
                                 return parts[1].Trim();
@@ -154,19 +166,20 @@ namespace csv2
             {
                 string errorMessage = $"[ERR0R] {ex.Message} at {DateTime.Now}";
                 Console.WriteLine(errorMessage);
-
-                using (StreamWriter writer = File.AppendText(logFilePath))
-                {
-                    writer.WriteLine(errorMessage);
-                }
             }
         }
 
         private void UploadToSQlDatabase()
         {
+            string server = LoadDirFromIni("Server");
+            string database = LoadDirFromIni("Database");
+            string userid = LoadDirFromIni("UserId");
+            string password = LoadDirFromIni("Password");
+
             try
             {
-                using (SqlConnection connection = new SqlConnection("Server=192.168.5.38\\INFORLN; Database=JPL_intdb;User Id=sa;Password=P@ssw0rd"))
+                //using (SqlConnection connection = new SqlConnection("Server=192.168.5.38\\INFORLN; Database=JPL_intdb;User Id=sa;Password=P@ssw0rd"))
+                using (SqlConnection connection = new SqlConnection("Server="+server+"; Database="+database+";User Id="+userid+";Password="+password))
                 {
                     connection.Open();
                     string tableName = "ARTransactions";
@@ -208,8 +221,8 @@ namespace csv2
                     string errorMessage = $"[SUCCESS] Record inserted successfully at {DateTime.Now}";
                     Updatelog(errorMessage);
                     Application.DoEvents();
-                    //Application.Exit();
-                    sendEmail();
+                    Application.Exit();
+                    //sendEmail();
 
                 }
             }
@@ -228,12 +241,15 @@ namespace csv2
                 MailMessage mail = new MailMessage();
                 string smtp = LoadDirFromIni("SmtpClient");
                 SmtpClient smtpClient = new SmtpClient(smtp);
+                Console.WriteLine(smtp);
 
                 string emailFrom = LoadDirFromIni("EmailFrom");
                 mail.From = new MailAddress(emailFrom);
+                Console.WriteLine(emailFrom);
 
                 string emailTo = LoadDirFromIni("EmailTo");
                 mail.To.Add(emailTo);
+                Console.WriteLine(emailTo);
 
                 mail.Subject = "CSV import to SQL";
                 mail.Body = "Attached is the log file.";
@@ -242,13 +258,17 @@ namespace csv2
                 System.Net.Mail.Attachment attachment;
                 attachment = new System.Net.Mail.Attachment(logFile);
                 mail.Attachments.Add(attachment);
+                Console.WriteLine(attachment);
 
                 string port = LoadDirFromIni("SmtpPort");
                 smtpClient.Port = (int)Convert.ToInt64(port);
+                Console.WriteLine(port);
 
                 string username = LoadDirFromIni("EmailFromUsername");
                 string password = LoadDirFromIni("EmailFromPassword");
                 smtpClient.Credentials = new System.Net.NetworkCredential(username, password);
+                Console.WriteLine(username);
+                Console.WriteLine(password);
 
                 smtpClient.EnableSsl = true;
                 smtpClient.Send(mail);
@@ -381,7 +401,7 @@ namespace csv2
 
         private void exitToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            Application.Exit();
+            sendEmail();
         }
 
         private void uploadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -414,6 +434,13 @@ namespace csv2
                 string filename = filenames[0];
                 System.Diagnostics.Process.Start("notepad.exe", filename);
             }
+        }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Form2 frm = new Form2();
+            frm.Show();
+            this.Hide();
         }
     }
 }

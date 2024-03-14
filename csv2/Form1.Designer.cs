@@ -35,6 +35,7 @@
             browseToolStripMenuItem = new ToolStripMenuItem();
             uploadToolStripMenuItem = new ToolStripMenuItem();
             exitToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem1 = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             logsToolStripMenuItem = new ToolStripMenuItem();
@@ -43,7 +44,6 @@
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
             toolStripProgressBar1 = new ToolStripProgressBar();
-            batchFileToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -73,7 +73,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { browseToolStripMenuItem, uploadToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { browseToolStripMenuItem, uploadToolStripMenuItem, exitToolStripMenuItem, exitToolStripMenuItem1 });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(46, 24);
             fileToolStripMenuItem.Text = "File";
@@ -81,27 +81,34 @@
             // browseToolStripMenuItem
             // 
             browseToolStripMenuItem.Name = "browseToolStripMenuItem";
-            browseToolStripMenuItem.Size = new Size(141, 26);
+            browseToolStripMenuItem.Size = new Size(159, 26);
             browseToolStripMenuItem.Text = "Browse";
             browseToolStripMenuItem.Click += browseToolStripMenuItem_Click;
             // 
             // uploadToolStripMenuItem
             // 
             uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
-            uploadToolStripMenuItem.Size = new Size(141, 26);
+            uploadToolStripMenuItem.Size = new Size(159, 26);
             uploadToolStripMenuItem.Text = "Upload";
             uploadToolStripMenuItem.Click += uploadToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(141, 26);
-            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Size = new Size(159, 26);
+            exitToolStripMenuItem.Text = "Test Email";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click_1;
+            // 
+            // exitToolStripMenuItem1
+            // 
+            exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            exitToolStripMenuItem1.Size = new Size(159, 26);
+            exitToolStripMenuItem1.Text = "Exit";
+            exitToolStripMenuItem1.Click += exitToolStripMenuItem1_Click;
             // 
             // helpToolStripMenuItem
             // 
-            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, logsToolStripMenuItem, batchFileToolStripMenuItem });
+            helpToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, logsToolStripMenuItem });
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             helpToolStripMenuItem.Size = new Size(76, 24);
             helpToolStripMenuItem.Text = "Settings";
@@ -130,7 +137,7 @@
             // aboutToolStripMenuItem1
             // 
             aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            aboutToolStripMenuItem1.Size = new Size(133, 26);
+            aboutToolStripMenuItem1.Size = new Size(224, 26);
             aboutToolStripMenuItem1.Text = "About";
             aboutToolStripMenuItem1.Click += aboutToolStripMenuItem1_Click;
             // 
@@ -158,13 +165,6 @@
             toolStripProgressBar1.RightToLeftLayout = true;
             toolStripProgressBar1.Size = new Size(114, 19);
             // 
-            // batchFileToolStripMenuItem
-            // 
-            batchFileToolStripMenuItem.Name = "batchFileToolStripMenuItem";
-            batchFileToolStripMenuItem.Size = new Size(224, 26);
-            batchFileToolStripMenuItem.Text = "Batch file";
-            batchFileToolStripMenuItem.Click += batchFileToolStripMenuItem_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -177,7 +177,7 @@
             MainMenuStrip = menuStrip1;
             Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
-            Text = "CSV Reader";
+            Text = "Msis CSV Reader";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             menuStrip1.ResumeLayout(false);
@@ -203,6 +203,6 @@
         private ToolStripMenuItem helpToolStripMenuItem1;
         private ToolStripMenuItem aboutToolStripMenuItem1;
         private ToolStripMenuItem logsToolStripMenuItem;
-        private ToolStripMenuItem batchFileToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem1;
     }
 }
